@@ -16,6 +16,12 @@ pub enum BlockchainError {
     
     #[error("Serialization error: {0}")]
     Serialization(String),
+    
+    #[error("Cryptography error: {0}")]
+    CryptoError(String),
+    
+    #[error("Invalid validator: {0}")]
+    InvalidValidator(String),
 }
 
 pub type Result<T> = std::result::Result<T, BlockchainError>;

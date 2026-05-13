@@ -30,8 +30,60 @@ pub struct TransactionID(pub [u8; 32]);
 pub struct BlockHash(pub [u8; 32]);
 
 /// Validator identifier
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct ValidatorID(pub [u8; 32]);
+
+impl Serialize for ValidatorID {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_bytes(&self.0)
+    }
+}
+
+impl<'de> Deserialize<'de> for ValidatorID {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        struct ValidatorIDVisitor;
+        
+        impl<'de> serde::de::Visitor<'de> for ValidatorIDVisitor {
+            type Value = ValidatorID;
+            
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("a 32-byte array")
+            }
+            
+            fn visit_bytes<E>(self, v: &[u8]) -> Result<Self::Value, E>
+            where
+                E: serde::de::Error,
+            {
+                if v.len() != 32 {
+                    return Err(E::custom(format!("expected 32 bytes, got {}", v.len())));
+                }
+                let mut arr = [0u8; 32];
+                arr.copy_from_slice(v);
+                Ok(ValidatorID(arr))
+            }
+            
+            fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+            where
+                A: serde::de::SeqAccess<'de>,
+            {
+                let mut arr = [0u8; 32];
+                for i in 0..32 {
+                    arr[i] = seq.next_element()?
+                        .ok_or_else(|| serde::de::Error::invalid_length(i, &self))?;
+                }
+                Ok(ValidatorID(arr))
+            }
+        }
+        
+        deserializer.deserialize_bytes(ValidatorIDVisitor)
+    }
+}
 
 /// Content-addressed state object with permanent ID and version-specific content hash
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

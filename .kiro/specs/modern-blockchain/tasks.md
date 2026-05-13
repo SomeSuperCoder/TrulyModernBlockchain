@@ -63,44 +63,44 @@ This document outlines the implementation tasks for building the modern blockcha
 
 ## Phase 2: Consensus Layer
 
-- [ ] 4. Implement BLS signature aggregation with DKG
-  - [ ] 4.1 Implement BLS12-381 signature operations
+- [x] 4. Implement BLS signature aggregation with DKG
+  - [x] 4.1 Implement BLS12-381 signature operations
     - Integrate BLS library (blst or arkworks)
     - Implement sign() and verify() functions
     - Implement signature aggregation
     - Add stake-weighted verification
     - _Requirements: 4.1, 4.3, 4.4_
   
-  - [ ] 4.2 Implement Distributed Key Generation protocol
+  - [x] 4.2 Implement Distributed Key Generation protocol
     - Implement DKG ceremony phases (polynomial generation, share exchange, verification)
     - Implement shared public key computation
     - Add validator join/leave handling
     - Persist DKG state across epochs
     - _Requirements: 4.2, 4.7_
   
-  - [ ] 4.3 Implement SignatureAggregator
+  - [x] 4.3 Implement SignatureAggregator
     - Create aggregator with stake weight tracking
     - Implement add_signature() with validation
     - Implement try_aggregate() with 2/3 threshold check
     - Implement verify() for aggregated signatures
     - _Requirements: 4.3, 4.5, 4.6_
 
-- [ ] 5. Implement leader selection and timeout handling
-  - [ ] 5.1 Implement stake-weighted VRF for leader selection
+- [x] 5. Implement leader selection and timeout handling
+  - [x] 5.1 Implement stake-weighted VRF for leader selection
     - Implement LeaderSchedule with deterministic PRNG (ChaCha20)
     - Implement compute_for_epoch() with stake-weighted selection
     - Implement get_leader() and get_backup_leaders()
     - Add schedule persistence to Epoch_State file
     - _Requirements: 5.1, 13.2, 13.3_
   
-  - [ ] 5.2 Implement timeout management and escalation
+  - [x] 5.2 Implement timeout management and escalation
     - Create TimeoutManager with configurable base timeout
     - Implement wait_for_block() with deadline tracking
     - Implement timeout escalation with 50% increase per backup
     - Calculate minimum timeout as 2× 99th percentile latency (floor 800ms)
     - _Requirements: 5.2, 5.3, 5.7_
   
-  - [ ] 5.3 Implement TimeoutCertificate creation and validation
+  - [x] 5.3 Implement TimeoutCertificate creation and validation
     - Implement create_timeout_certificate() with 2/3 stake signatures
     - Implement validation to reject premature certificates
     - Implement validation to reject conflicting votes
