@@ -13,48 +13,48 @@ This document outlines the implementation tasks for building the modern blockcha
   - Set up CI/CD pipeline with GitHub Actions
   - _Requirements: 9.1, 9.5, 9.7_
 
-- [ ] 2. Implement core data structures
-  - [ ] 2.1 Implement File structure with nonce-based collision prevention
+- [x] 2. Implement core data structures
+  - [x] 2.1 Implement File structure with nonce-based collision prevention
     - Create File struct with all fields (ID, balance, tx_manager, data, executable, version, timestamps, nonce)
     - Implement compute_state_hash() method using SHA-256
     - Implement storage_cost() calculation with exponential growth
     - Add validation for maximum file size (10MB)
     - _Requirements: 1.1, 1.2, 1.3, 11.1, 11.8_
   
-  - [ ] 2.2 Implement ObjectReference for content-addressed state
+  - [x] 2.2 Implement ObjectReference for content-addressed state
     - Create ObjectReference struct with (file_id, version, state_hash)
     - Implement verify() method to check against File state
     - Add serialization/deserialization support
     - _Requirements: 1.4, 1.5, 1.6_
   
-  - [ ] 2.3 Implement Transaction and Instruction structures
+  - [x] 2.3 Implement Transaction and Instruction structures
     - Create Transaction struct with inputs, instructions, signatures, gas limits
     - Create Instruction struct with program_id, file_accesses, data
     - Implement compute_id() for transaction hashing
     - Implement calculate_fee() with ZK proof support
     - _Requirements: 6.7, 8.2, 8.6_
   
-  - [ ] 2.4 Implement Block and BlockHeader structures
+  - [x] 2.4 Implement Block and BlockHeader structures
     - Create BlockHeader with slot, height, timestamp, hashes, state_root
     - Create Block with header, transactions, aggregated signature, parent references
     - Add block versioning support
     - _Requirements: 2.1, 2.2, 17.1_
 
 - [ ] 3. Implement FileStore with RocksDB backend
-  - [ ] 3.1 Set up RocksDB integration
+  - [x] 3.1 Set up RocksDB integration
     - Configure RocksDB with appropriate column families
     - Implement connection management and error handling
     - Add database migration support
     - _Requirements: 1.7_
   
-  - [ ] 3.2 Implement File CRUD operations
+  - [x] 3.2 Implement File CRUD operations
     - Implement create_file() with ID generation and validation
     - Implement get_file() with LRU caching
     - Implement update_file() with version incrementing
     - Implement delete_file() with balance refund
     - _Requirements: 1.1, 1.6, 11.2, 11.3, 11.6_
   
-  - [ ] 3.3 Implement Merkle tree for state root computation
+  - [x] 3.3 Implement Merkle tree for state root computation
     - Create MerkleTree structure with sorted leaf storage
     - Implement insert() and update() methods
     - Implement root() computation with deterministic ordering

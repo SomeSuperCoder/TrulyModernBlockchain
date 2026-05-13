@@ -15,3 +15,7 @@ sha2 = { workspace = true }
 rand = { workspace = true }
 thiserror = { workspace = true }
 anyhow = { workspace = true }
+lru = "0.12"
+
+[dev-dependencies]
+tempfile = "3.8"
