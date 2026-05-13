@@ -1,0 +1,19 @@
+[package]
+name = "blockchain-execution"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+blockchain-common = { path = "../common" }
+blockchain-state = { path = "../state" }
+
+tokio = { workspace = true }
+serde = { workspace = true }
+wasmer = { workspace = true }
+wasmer-compiler-cranelift = { workspace = true }
+sha2 = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }

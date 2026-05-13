@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package consensus;
+
+// Block message for consensus layer
+message Block {
+  BlockHeader header = 1;
+  repeated bytes transactions = 2;
+  bytes aggregated_signature = 3;
+  repeated bytes parent_hashes = 4;
+}
+
+message BlockHeader {
+  uint64 slot = 1;
+  uint64 height = 2;
+  int64 timestamp = 3;
+  bytes previous_hash = 4;
+  bytes transactions_root = 5;
+  bytes state_root = 6;
+  bytes proposer = 7;
+  uint64 epoch = 8;
+}
+
+// Vote message for block attestation
+message Vote {
+  bytes block_hash = 1;
+  uint64 slot = 2;
+  bytes validator_id = 3;
+  bytes signature = 4;
+  uint64 stake_weight = 5;
+}
+
+// Timeout certificate
+message TimeoutCertificate {
+  uint64 slot = 1;
+  uint32 backup_index = 2;
+  repeated bytes signatures = 3;
+}
+
+// Service for consensus communication
+service ConsensusService {
+  rpc ProposeBlock(Block) returns (BlockResponse);
+  rpc SubmitVote(Vote) returns (VoteResponse);
+  rpc RequestTimeout(TimeoutRequest) returns (TimeoutCertificate);
+}
+
+message BlockResponse {
+  bool accepted = 1;
+  string message = 2;
+}
+
+message VoteResponse {
+  bool accepted = 1;
+}
+
+message TimeoutRequest {
+  uint64 slot = 1;
+}

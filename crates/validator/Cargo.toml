@@ -1,0 +1,27 @@
+[package]
+name = "blockchain-validator"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "validator-client"
+path = "src/main.rs"
+
+[dependencies]
+blockchain-common = { path = "../common" }
+blockchain-proto = { path = "../proto" }
+blockchain-consensus = { path = "../consensus" }
+
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+blst = { workspace = true }
+sha2 = { workspace = true }
+rand = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }

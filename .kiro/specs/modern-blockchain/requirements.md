@@ -155,7 +155,7 @@ This document specifies the requirements for a next-generation blockchain that c
 #### Acceptance Criteria
 
 1. THE System SHALL implement the consensus engine in Rust for performance and safety
-2. THE System SHALL implement the validator client in Zig for minimal overhead and hardware control
+2. THE System SHALL implement the validator client in Rust for performance and safety
 3. THE System SHALL implement the P2P networking layer in Elixir for fault tolerance and concurrency
 4. THE System SHALL use Protocol Buffers version 3 for all inter-process communication between components
 5. THE System SHALL define formal interface contracts for each component boundary with input validation

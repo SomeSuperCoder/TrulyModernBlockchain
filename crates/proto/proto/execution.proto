@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package execution;
+
+// Transaction execution request
+message ExecuteRequest {
+  bytes transaction_id = 1;
+  repeated bytes inputs = 2;
+  repeated Instruction instructions = 3;
+  uint64 gas_limit = 4;
+}
+
+message Instruction {
+  bytes program_id = 1;
+  repeated FileAccess file_accesses = 2;
+  bytes data = 3;
+}
+
+message FileAccess {
+  bytes file_id = 1;
+  AccessPermission permission = 2;
+}
+
+enum AccessPermission {
+  READ = 0;
+  WRITE = 1;
+}
+
+// Execution result
+message ExecuteResponse {
+  bool success = 1;
+  bytes state_root = 2;
+  uint64 gas_used = 3;
+  string error_message = 4;
+}
+
+// Service for execution communication
+service ExecutionService {
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse);
+  rpc ExecuteBatch(BatchExecuteRequest) returns (BatchExecuteResponse);
+}
+
+message BatchExecuteRequest {
+  repeated ExecuteRequest requests = 1;
+}
+
+message BatchExecuteResponse {
+  repeated ExecuteResponse responses = 1;
+}

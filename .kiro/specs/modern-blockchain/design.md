@@ -83,7 +83,7 @@ This document describes the technical design for a next-generation blockchain th
 └─────────────────────────────────────────────────────────────────┘
                               ↓ ↑
 ┌─────────────────────────────────────────────────────────────────┐
-│                    VALIDATOR CLIENT (Zig)                        │
+│                    VALIDATOR CLIENT (Rust)                       │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────────┐  │
 │  │ Block        │  │ Signature    │  │ Hardware-Optimized   │  │
 │  │ Production   │  │ Generation   │  │ Networking           │  │
@@ -123,7 +123,7 @@ This document describes the technical design for a next-generation blockchain th
 - **Data Availability**: Ensures transaction data is accessible
 - **Erasure Coding**: Provides redundancy for data recovery
 
-#### Validator Client (Zig)
+#### Validator Client (Rust)
 - **Block Production**: Creates blocks at assigned slots
 - **Signature Generation**: Signs blocks and state transitions
 - **Hardware Optimization**: Minimal overhead for maximum performance
@@ -1755,7 +1755,7 @@ This design provides a comprehensive blueprint for implementing a next-generatio
 - **Economic security** through stake-weighted voting and slashing
 - **Scalability** via light clients and data availability sampling
 
-The polyglot architecture leverages the strengths of Rust (performance), Zig (hardware optimization), and Elixir (fault tolerance) while maintaining security through formal interfaces and comprehensive testing.
+The polyglot architecture leverages the strengths of Rust (performance and safety) and Elixir (fault tolerance) while maintaining security through formal interfaces and comprehensive testing.
 
 
 

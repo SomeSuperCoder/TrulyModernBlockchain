@@ -4,9 +4,9 @@ This document outlines the implementation tasks for building the modern blockcha
 
 ## Phase 1: Core Infrastructure and Data Structures
 
-- [ ] 1. Set up project structure and build system
+- [x] 1. Set up project structure and build system
   - Create Rust workspace with crates for consensus, execution, state, storage
-  - Set up Zig project for validator client
+  - Set up Rust validator client crate
   - Set up Elixir/OTP application for networking
   - Configure Protocol Buffers for inter-process communication
   - Create unified build script that compiles all components
@@ -476,9 +476,9 @@ This document outlines the implementation tasks for building the modern blockcha
     - Create game example project
     - Implement interactive tutorial system
 
-## Phase 9: Validator Client (Zig)
+## Phase 9: Validator Client (Rust)
 
-- [ ] 21. Implement high-performance validator client in Zig
+- [ ] 21. Implement high-performance validator client in Rust
   - [ ] 21.1 Implement block production
     - Create block at assigned slots
     - Collect transactions from mempool

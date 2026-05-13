@@ -1,0 +1,17 @@
+[package]
+name = "blockchain-storage"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+blockchain-common = { path = "../common" }
+
+serde = { workspace = true }
+bincode = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+# RocksDB will be added when implementing Phase 1
+# rocksdb = { workspace = true }

@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package networking;
+
+// Gossip message types
+message GossipMessage {
+  oneof message_type {
+    BlockAnnouncement block = 1;
+    TransactionAnnouncement transaction = 2;
+    VoteAnnouncement vote = 3;
+  }
+  bytes sender_id = 4;
+  int64 timestamp = 5;
+}
+
+message BlockAnnouncement {
+  bytes block_hash = 1;
+  bytes block_data = 2;
+}
+
+message TransactionAnnouncement {
+  bytes transaction_id = 1;
+  bytes transaction_data = 2;
+}
+
+message VoteAnnouncement {
+  bytes block_hash = 1;
+  bytes vote_data = 2;
+}
+
+// Peer discovery
+message PeerInfo {
+  bytes peer_id = 1;
+  repeated string addresses = 2;
+  int64 last_seen = 3;
+}
+
+message PeerListRequest {
+  uint32 max_peers = 1;
+}
+
+message PeerListResponse {
+  repeated PeerInfo peers = 1;
+}
+
+// Service for P2P networking
+service NetworkingService {
+  rpc Gossip(GossipMessage) returns (GossipResponse);
+  rpc GetPeers(PeerListRequest) returns (PeerListResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+}
+
+message GossipResponse {
+  bool accepted = 1;
+}
+
+message HeartbeatRequest {
+  bytes peer_id = 1;
+  int64 timestamp = 2;
+}
+
+message HeartbeatResponse {
+  bool alive = 1;
+}
