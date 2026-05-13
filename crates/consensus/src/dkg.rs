@@ -143,9 +143,9 @@ impl DKGCeremony {
             for _ in 0..self.threshold {
                 let mut rng = rand::thread_rng();
                 let mut ikm = [0u8; 32];
-                rand::RngCore::fill_bytes(&mut rng, &mut ikm);
+                rand::RngCore::fill_bytes(&mut rng, &mut ikm[..]);
                 
-                let coeff = SecretKey::key_gen(&ikm, &[])
+                let coeff = SecretKey::key_gen(&ikm[..], &[][..])
                     .map_err(|e| BlockchainError::CryptoError(
                         format!("Failed to generate coefficient: {:?}", e)
                     ))?;
@@ -255,8 +255,9 @@ impl DKGCeremony {
             hasher.update(&validator.id.0);
             hasher.update(&epoch.to_le_bytes());
             let share_seed = hasher.finalize();
+            let share_seed_bytes: [u8; 32] = share_seed.into();
             
-            let share_key = SecretKey::key_gen(&share_seed, &[])
+            let share_key = SecretKey::key_gen(&share_seed_bytes[..], &[][..])
                 .map_err(|e| BlockchainError::CryptoError(
                     format!("Failed to generate key share: {:?}", e)
                 ))?;
@@ -404,8 +405,8 @@ mod tests {
                 let id = ValidatorID([i as u8; 32]);
                 let mut rng = rand::thread_rng();
                 let mut ikm = [0u8; 32];
-                rand::RngCore::fill_bytes(&mut rng, &mut ikm);
-                let sk = SecretKey::key_gen(&ikm, &[]).unwrap();
+                rand::RngCore::fill_bytes(&mut rng, &mut ikm[..]);
+                let sk = SecretKey::key_gen(&ikm[..], &[][..]).unwrap();
                 let pk = sk.sk_to_pk();
                 
                 ValidatorInfo {

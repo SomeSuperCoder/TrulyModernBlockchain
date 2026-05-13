@@ -107,22 +107,22 @@ This document outlines the implementation tasks for building the modern blockcha
     - Add slashing for premature timeout signatures
     - _Requirements: 5.4, 5.5, 5.8_
 
-- [ ] 6. Implement Mysticeti DAG consensus
-  - [ ] 6.1 Implement DAG data structure
+- [x] 6. Implement Mysticeti DAG consensus
+  - [x] 6.1 Implement DAG data structure
     - Create DAG node structure with parent references
     - Implement add_block() with parent validation
     - Implement topological ordering algorithm
     - Add fork detection and resolution
     - _Requirements: 2.1, 2.2_
   
-  - [ ] 6.2 Implement block proposal and voting
+  - [x] 6.2 Implement block proposal and voting
     - Implement block creation with transaction ordering
     - Implement block broadcasting via gossip
     - Implement vote collection and aggregation
     - Implement finalization when 2/3 stake reached
     - _Requirements: 2.4, 4.3, 17.1_
   
-  - [ ] 6.3 Implement fork choice rule
+  - [x] 6.3 Implement fork choice rule
     - Implement heaviest chain selection by accumulated stake votes
     - Implement conflict resolution for competing blocks
     - Implement finality checkpoint tracking

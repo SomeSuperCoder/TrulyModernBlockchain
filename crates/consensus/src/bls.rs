@@ -16,9 +16,9 @@ impl BlsKeyPair {
     pub fn generate() -> Result<Self, BlockchainError> {
         let mut rng = rand::thread_rng();
         let mut ikm = [0u8; 32];
-        rand::RngCore::fill_bytes(&mut rng, &mut ikm);
+        rand::RngCore::fill_bytes(&mut rng, &mut ikm[..]);
         
-        let secret_key = SecretKey::key_gen(&ikm, &[])
+        let secret_key = SecretKey::key_gen(&ikm[..], &[][..])
             .map_err(|e| BlockchainError::CryptoError(format!("Failed to generate secret key: {:?}", e)))?;
         let public_key = secret_key.sk_to_pk();
         
@@ -57,7 +57,9 @@ impl BlsKeyPair {
     
     /// Sign a message with this key pair
     pub fn sign(&self, message: &[u8]) -> BlsSignature {
-        let signature = self.secret_key.sign(message, &[], &[]);
+        let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+        let aug = b"";
+        let signature = self.secret_key.sign(message, &dst[..], &aug[..]);
         BlsSignature {
             signature,
         }
@@ -65,7 +67,9 @@ impl BlsKeyPair {
     
     /// Verify a signature against this public key
     pub fn verify(&self, message: &[u8], signature: &BlsSignature) -> bool {
-        let result = signature.signature.verify(true, message, &[], &[], &self.public_key, true);
+        let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+        let aug = b"";
+        let result = signature.signature.verify(true, message, &dst[..], &aug[..], &self.public_key, true);
         result == BLST_ERROR::BLST_SUCCESS
     }
 }
@@ -92,7 +96,9 @@ impl BlsSignature {
     
     /// Verify this signature against a public key and message
     pub fn verify(&self, message: &[u8], public_key: &PublicKey) -> bool {
-        let result = self.signature.verify(true, message, &[], &[], public_key, true);
+        let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+        let aug = b"";
+        let result = self.signature.verify(true, message, &dst[..], &aug[..], public_key, true);
         result == BLST_ERROR::BLST_SUCCESS
     }
 }
@@ -273,7 +279,8 @@ impl SignatureAggregator {
         // or use fast aggregate verify if all signed the same message
         // Using fast aggregate verify for same message
         let pk_refs: Vec<&PublicKey> = public_keys.iter().collect();
-        let result = signature.fast_aggregate_verify(true, message, &[], &pk_refs);
+        let dst = b"BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_NUL_";
+        let result = signature.fast_aggregate_verify(true, message, &dst[..], &pk_refs);
         
         Ok(result == BLST_ERROR::BLST_SUCCESS)
     }
@@ -369,8 +376,9 @@ mod tests {
         }
         
         let mut aggregator = SignatureAggregator::new(validators);
-        let message = b"Block hash to sign";
+        let message = b"Block hash to sign".as_ref();
         
+        // Add signatures from 3 validators (75% stake, exceeds 2/3 threshold)
         // Add signatures from 3 validators (75% stake, exceeds 2/3 threshold)
         for i in 0..3 {
             let signature = keypairs[i].sign(message);
@@ -412,7 +420,7 @@ mod tests {
         }
         
         let mut aggregator = SignatureAggregator::new(validators);
-        let message = b"Block hash to sign";
+        let message = b"Block hash to sign".as_ref();
         
         // Add signatures from only 2 validators (50% stake, below 2/3 threshold)
         for i in 0..2 {
@@ -441,7 +449,7 @@ mod tests {
         );
         
         let mut aggregator = SignatureAggregator::new(vec![validator_info]);
-        let message = b"Block hash to sign";
+        let message = b"Block hash to sign".as_ref();
         
         // Sign with wrong key
         let wrong_signature = keypair2.sign(message);
